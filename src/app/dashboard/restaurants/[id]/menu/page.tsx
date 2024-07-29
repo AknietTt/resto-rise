@@ -6,6 +6,7 @@ import { Card, Col, Row, Spin, Button, Modal, Form, Input, Upload, message } fro
 import { UploadOutlined } from '@ant-design/icons';
 import Cookies from 'js-cookie';
 import { host } from '@/utils/constnants';
+import { useRouter } from 'next/navigation';
 
 interface Food {
   id: string;
@@ -26,7 +27,7 @@ export default function Menu({ params }: { params: { id: string } }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
-
+  const route = useRouter();
   useEffect(() => {
     const fetchMenu = async () => {
       const token = Cookies.get('token');
@@ -166,6 +167,9 @@ export default function Menu({ params }: { params: { id: string } }) {
                   <Card.Meta title={food.name} description={food.description} />
                   <p className="mt-2"><strong>Цена:</strong> {food.price}₸</p>
                   <Button danger onClick={() => handleDeleteFood(food.id)} style={{ marginTop: 10 }}>Удалить</Button>
+                  <Button danger onClick={() => {
+                    route.push('/dashboard/restaurants/'+params.id+'/edit/menu/'+food.id)
+                  }} style={{ marginTop: 10, marginLeft:'5%' }}>Изменить</Button>
                 </Card>
               </Col>
             ))}
@@ -232,6 +236,7 @@ export default function Menu({ params }: { params: { id: string } }) {
             <Button type="primary" htmlType="submit">
               Добавить
             </Button>
+            
           </Form.Item>
         </Form>
       </Modal>

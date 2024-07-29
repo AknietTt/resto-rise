@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Row, Col, Spin, Button, Modal, Form, Input, Select, message } from 'antd';
-import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { host } from '@/utils/constnants';
+import { useRouter } from 'next/navigation';
 
 interface Branch {
   id: string;
@@ -141,13 +141,17 @@ export default function RestaurantInfo ({ params }: { params: { id: string } }) 
     }
   };
 
+  const handleEditBranch = (branchId: string) => {
+    router.push(`/dashboard/restaurants/${params.id}/edit/branch/${branchId}`); // Переход на страницу редактирования филиала
+  };
+
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen"><Spin /></div>;
   }
 
   return (
     <div className="container mx-auto p-4">
-      <Button type="primary" onClick={showAddModal} style={{ marginBottom: 20  , marginRight:20}}>Добавить</Button>
+      <Button type="primary" onClick={showAddModal} style={{ marginBottom: 20, marginRight: 20 }}>Добавить</Button>
       <Button type="primary" onClick={() => router.push(`/dashboard/restaurants/${params.id}/menu`)} style={{ marginBottom: 20 }}>Меню</Button>
       <Row gutter={[16, 16]}>
         {branches.map(branch => (
@@ -155,7 +159,12 @@ export default function RestaurantInfo ({ params }: { params: { id: string } }) 
             <Card
               title={branch.restaurant}
               hoverable
-              extra={<Button type="link" danger onClick={() => handleDeleteBranch(branch.id)}>Удалить</Button>}
+              extra={
+                <div>
+                  <Button type="link" danger onClick={() => handleDeleteBranch(branch.id)}>Удалить</Button>
+                  <Button type="link" onClick={() => handleEditBranch(branch.id)}>Изменить</Button>
+                </div>
+              }
             >
               <p><strong>Адрес:</strong> {branch.address}</p>
               <p><strong>Город:</strong> {branch.city}</p>
@@ -197,4 +206,4 @@ export default function RestaurantInfo ({ params }: { params: { id: string } }) 
       </Modal>
     </div>
   );
-};
+}
