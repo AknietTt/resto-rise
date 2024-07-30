@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Form, Input, Button, Spin, Alert } from 'antd';
+import { Form, Input, Button, Spin, Alert, message } from 'antd';
 import 'tailwindcss/tailwind.css';
 import { useRouter } from 'next/navigation';
 import { host } from '@/utils/constnants';
@@ -66,7 +66,7 @@ export default function FoodEdit({ params }: { params: { foodId: string } }) {
           }
         );
         if (response.data.isSuccess) {
-          alert('Данные успешно обновлены');
+          message.success('Данные успешно обновлены');
           router.back();
         } else {
           setError(response.data.error);
@@ -87,7 +87,7 @@ export default function FoodEdit({ params }: { params: { foodId: string } }) {
           layout="vertical"
           initialValues={food}
           onFinish={handleSubmit}
-          className="bg-white p-6 shadow-md rounded-lg"
+          className="bg-white p-6 shadow-md rounded-lg "
         >
           <Form.Item label="Название" name="name" rules={[{ required: true, message: 'Пожалуйста, введите название' }]}>
             <Input />
